@@ -21,15 +21,15 @@ class Api::V1::TasksController < ApplicationController
     end
     def update
         respond_to do |format|
-            if task.update(task_params)
-                format.json { render :show, status: :ok, location: api_v1_task_path(task) }
+            if @task.update(task_params)
+                format.json { render :show, status: :ok, location: api_v1_task_path(@task) }
             else
-                format.json { render json: task.errors, status: :unprocessable_entity }
+                format.json { render json: @task.errors, status: :unprocessable_entity }
             end
         end
     end
     def destroy
-        task.destroy
+        @task.destroy
         respond_to do |format|
             format.json { head :no_content }
         end
