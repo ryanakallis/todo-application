@@ -1,5 +1,5 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import axios from "axios";
 
 import ErrorMessage from "./ErrorMessage";
@@ -7,19 +7,29 @@ import TodoItems from "./TodoItems";
 import TodoItem from "./TodoItem";
 import TodoForm from "./TodoForm";
 
+import setAxiosHeaders from "./AxiosHeaders";
+import lightThemeIcon from '../../../assets/images/icon-sun.svg';
+import darkThemeIcon from '../../../assets/images/icon-moon.svg';
+import '../../../assets/stylesheets/dark.css'
+import '../../../assets/stylesheets/light.css'
+
+
 class TodoApp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             todoItems: [],
             hideCompletedTodoItems: false,
-            errorMessage: null
+            errorMessage: null,
+            theme: "light"
         };
         this.getTodoItems = this.getTodoItems.bind(this);
         this.createTodoItem = this.createTodoItem.bind(this);
         this.toggleCompletedTodoItems = this.toggleCompletedTodoItems.bind(this);
+        this.handleDestroyCompleted = this.handleDestroyCompleted.bind(this);
         this.handleErrors = this.handleErrors.bind(this);
         this.clearErrors = this.clearErrors.bind(this);
+        this.createTodoItem = this.createTodoItem.bind(this);
     }
 
     componentDidMount() {
@@ -37,6 +47,24 @@ class TodoApp extends React.Component {
     toggleCompletedTodoItems() {
         this.setState({ hideCompletedTodoItems: !this.state.hideCompletedTodoItems });
     }
+
+    handleDestroyCompleted() {
+        setAxiosHeaders();
+        const confirmation = confirm("Are you sure?");
+        if (confirmation) {
+            axios
+            .delete("/api/v1/tasks/bulk_destroy")
+                .then(response => {
+                    console.log(this.getTodoItems());
+                    return;
+                    this.getTodoItems();
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    }
+    
 
     createTodoItem(todoItem) {
         const todoItems = [todoItem, ...this.state.todoItems];
@@ -61,13 +89,22 @@ class TodoApp extends React.Component {
             });
     }
 
+    toggleClass() {
+        const selectedtheme = this.state.theme != "light" ? "light" : "dark"
+        this.setState({ theme: selectedtheme });
+    };
+
     render() {
         return (
             <>
                 {this.state.errorMessage && (
                     <ErrorMessage errorMessage={this.state.errorMessage} />
                 )}
-
+                <div className="d-flex justify-content-between">
+                    <h2 style={{fontWeight: 900, color: "#fff"}}>T O D O</h2>
+                    <span><img className="cursor-pointer" onClick={() => this.toggleClass()} src={this.state.theme != "light" ? lightThemeIcon : darkThemeIcon} /></span>
+                </div>
+                
                 <TodoForm 
                     createTodoItem={this.createTodoItem}      
                     handleErrors={this.handleErrors}
@@ -77,6 +114,7 @@ class TodoApp extends React.Component {
                 <TodoItems
                     toggleCompletedTodoItems={this.toggleCompletedTodoItems}
                     hideCompletedTodoItems={this.state.hideCompletedTodoItems}
+                    handleDestroyCompleted={this.handleDestroyCompleted}
                 >
                     {this.state.todoItems.map(todoItem => (
                         <TodoItem 

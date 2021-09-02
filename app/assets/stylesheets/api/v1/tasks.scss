@@ -1,3 +1,102 @@
 // Place all the styles related to the api/v1/tasks controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+
+
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;200;300;400;700&display=swap');
+
+$display-font-sizes: (
+  1: 5rem,
+  2: 4.5rem,
+  3: 4rem,
+  4: 3.5rem,
+  5: 3rem,
+  6: 2.5rem,
+  7: 2rem
+);
+
+
+body, html, p, h1, h2, h3, h4, h5, h6 {
+    font-family: 'Josefin Sans', sans-serif !important;
+}
+
+.btn-link {
+    font-weight: 100 !important;
+    color: #3d3d3d !important;
+    text-decoration: none !important;
+    line-height: 0 !important;
+    padding: 0 !important;
+    font-size: 13px  !important;
+}
+
+.no-border {
+  border: 0 !important;
+  box-shadow: none !important; /* You may want to include this as bootstrap applies these styles too */
+  background: transparent;
+}
+
+input[readonly] { 
+  background: transparent !important;
+  color: rgb(131, 120, 120) !important; 
+  border: 1px solid #666 !important;
+  border: 0 !important; 
+}
+
+.completed_task {
+  text-decoration: line-through !important;
+}
+
+.active_task {
+  color: #fff !important;
+  background: transparent !important;
+  font-weight: 300 !important;
+}
+
+.link {
+  font-weight: 300 !important;
+  color: #fff !important;
+}
+
+.link:hover {
+  font-weight: 400 !important;
+  color: #fff !important;
+}
+
+#trigger {
+  display: none;
+}
+
+:checked + .checker {
+    background-position: right center;
+}
+
+  
+.checker {
+    width: 15px;
+    height: 15px;
+    background: #212529;
+    border-radius: 100%;
+    position: relative;
+    text-align: center;
+    padding: 2px;
+    box-sizing: border-box;
+    float: left;
+    margin-left: "24px";
+    margin-top: "58px";
+}
+
+.checker::before {
+    border-radius: 100%;
+    content: '';
+    background-image: linear-gradient(132deg,  rgb(125, 167, 202), rgb(150, 111, 185));
+    top: -2px;
+    left: -2px;
+    bottom: -2px;
+    right: -2px;
+    position: absolute;
+    z-index:-1;
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}

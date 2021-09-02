@@ -28,6 +28,12 @@ class Api::V1::TasksController < ApplicationController
             end
         end
     end
+    def bulk_destroy
+        Task.where(complete: true).delete_all
+        respond_to do |format|
+            format.json { head :no_content }
+        end
+    end
     def destroy
         @task.destroy
         respond_to do |format|
